@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bootstrap Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="http://pedlinux17.uk.evolving.com:8080/tnm6/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="http://pedlinux17.uk.evolving.com:8080/tnm6/js/bootstrap.min.js"></script>
+    <script src="https://github.com/fent/randexp.js/releases/download/v0.4.3/randexp.min.js"></script>
+  </head>
+  <body>
+    <!-- <input type="text" id="splitNum" placeholder="Enter Number" />
+        <button onclick="splitNum()" class="btn btn-sm btn-success">Get Numbers</button><br/> -->
+    <!--
+
+                /^900([0-9]){1}([0-9]){1}(\1)(\2)(\1)(\2)(\1)/
+
+            -->
+    <input
+      type="text"
+      id="regEx"
+      placeholder="Enter Reg Ex"
+      style="width: 350px"
+    />
+    <input
+      type="text"
+      id="regExlength"
+      value="2"
+      style="width: 350px"
+      placeholder="How many results to generate?"
+    />
+    <button class="btn btn-sm btn-primary" onclick="RegEx()">Text RegEx</button>
+    <script>
+      //const str = "33AAXY45B9Z";
+
+      //get Alpha values
+      // let regex = /[^a-z]/gi;
+      // var alpha = str.replace(regex, "");
+      // console.log('Out put 1>>',alpha);
+
+      // get remove duplicates
+      // let removeDup = alpha.split('').filter(function(value, index, self) {
+      //     return self.indexOf(value) == index;
+      // }).join('');
+      // console.log('Out put 2>>',removeDup);
+
+      // get split number
+      // function splitNum(){
+      //     let number = document.getElementById('splitNum').value;
+      //     let outPut = [];
+      //     for(let x = 0; x < number.toString().split("").length-2; x++){
+      //         outPut.push( +number.toString().slice(0, x+2))
+      //     }
+      //     console.log(outPut);
+      // }
+
+      // Reg Ex test code
+      function RegEx() {
+        var regExValue = document.getElementById("regEx").value;
+        if (!regExValue.replace(/\s/, "").length <= 0) {
+          const isRegEx = (regExValue) => {
+            try {
+              return new Function(`
+                            "use strict";
+                            try {
+                                new RegExp(${regExValue});
+                                return true;
+                            } catch (e) {
+                                return false;
+                            }
+                        `)();
+            } catch (e) {
+              return false;
+            }
+          };
+          if (isRegEx(regExValue)) {
+            let output = [];
+            var elelength = document.getElementById("regExlength").value;
+            for (let x = 0; x < elelength; x++) {
+              let genVal = new RandExp(regExValue).gen();
+              let genArr = genVal.trim().split("");
+              let genArr1 = genArr.pop();
+              let genArr2 = genArr.shift();
+              output.push(genArr.join(""));
+            }
+            console.log("output", output);
+            //output.toString()
+            matchInArray(regExValue, output);
+          } else {
+            console.log("false");
+          }
+          function matchInArray(string, expressions) {
+            var len = expressions.length;
+            for (var i = 0; i < len; i++) {
+            var regex1 = /^900([0-9]){1}([0-9]){1}(\1)(\2)(\1)(\2)(\1)/
+              if (new RegExp(string).test(expressions[i])) {
+                console.log("output values are matched with regex");
+              } else {
+                console.log("not matching");
+              }
+            }
+            return false;
+          }
+        } else {
+          console.log("no empty spaces");
+        }
+      }
+
+      //  function matchInArray(string, expressions) {
+      // 	var len = expressions.length;
+      // 	for (var i = 0; i < len; i++) {
+      // 		if (string.test(expressions[i])) {
+      //             debugger;
+      // 			return true;
+      // 		}
+      // 	}
+      // 	return false;
+      // };
+      // 	var output = ['90049494949', '90000000000'];
+      // 	var regex1 = /^900([0-9]){1}([0-9]){1}(\1)(\2)(\1)(\2)(\1)/
+      // 	matchInArray(regex1, output)
+    </script>
+  </body>
+</html>
